@@ -1,0 +1,29 @@
+The system is: Darwin - 15.6.0 - x86_64
+The system is: Darwin - 15.6.0 - x86_64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+
+The C compiler identification is AppleClang, found in "/Users/cheesey/devdump/airtalk/main/build/CMakeFiles/3.20.5/CompilerIdC/a.out"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ 
+Build flags: 
+Id flags:  
+
+The output was:
+0
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+
+The CXX compiler identification is AppleClang, found in "/Users/cheesey/devdump/airtalk/main/build/CMakeFiles/3.20.5/CompilerIdCXX/a.out"
+
+The system is: Darwin - 15.6.0 - x86_64
