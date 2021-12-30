@@ -51,5 +51,6 @@ Icon
 
 # Project specific
 /build
+/main/build
 sdkconfig.old
 
