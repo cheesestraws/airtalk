@@ -17,7 +17,7 @@ bool is_ddp_packet(llap_packet* packet) {
 	
 	
 	if (packet->packet[LLAP_TYPE_OFFSET] == 1 ||
-	    packet->packet[LLAP_TYPE_OFFSET] == 2) {
+		packet->packet[LLAP_TYPE_OFFSET] == 2) {
 	 
 	 	return true;   
 	}

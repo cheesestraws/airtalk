@@ -158,7 +158,7 @@ void udp_rx_runloop(void *pvParameters) {
 				// we actually want to send traffic to?  If not, go around
 				// again.
 				if (!nt_fresh(&forward_for_nodes, buffer[4], 3600) &&
-				    (buffer[4] != 255)) {
+					(buffer[4] != 255)) {
 					continue;
 				}
 			

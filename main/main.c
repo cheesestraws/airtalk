@@ -36,13 +36,13 @@ void app_main(void)
 	printf("wifi init\n");
 	init_at_wifi();
 	
-    
-    start_udp(packet_pool, AppsToUDP, UDPtoUART);
+	
+	start_udp(packet_pool, AppsToUDP, UDPtoUART);
 	start_scan_manager();
-    start_apps(packet_pool, UARTtoApps, UDPtoUART, AppsToUDP);
-    uart_start(packet_pool, UDPtoUART, UARTtoApps);
+	start_apps(packet_pool, UARTtoApps, UDPtoUART, AppsToUDP);
+	uart_start(packet_pool, UDPtoUART, UARTtoApps);
 
-    while(1) {
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+	while(1) {
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
 }

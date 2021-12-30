@@ -36,9 +36,9 @@ void send_fake_nbp_LkUpReply(uint8_t node, uint8_t socket, uint8_t enumerator,
 	uint16_t zone_len = strlen(zone);
 	
 	uint16_t tuple_len = 5 + // network information
-	                  3 + // string length bytes
-	                  object_len + type_len + zone_len;
-	                
+					  3 + // string length bytes
+					  object_len + type_len + zone_len;
+					
 	uint16_t nbp_packet_len = tuple_len + 2;
 	uint16_t ddp_packet_len = nbp_packet_len + 5;
 	uint16_t llap_packet_len = ddp_packet_len + 3;

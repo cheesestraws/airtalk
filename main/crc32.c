@@ -52,19 +52,19 @@ static uint32_t crc_32_tab[] = { /* CRC polynomial 0xedb88320 */
 };
 
 #define UPDC32(octet,crc) (crc_32_tab[((crc)\
-     ^ ((uint8_t)octet)) & 0xff] ^ ((crc) >> 8))
+	 ^ ((uint8_t)octet)) & 0xff] ^ ((crc) >> 8))
 
 
 uint32_t crc32buf(char *buf, size_t len)
 {
-      register uint32_t oldcrc32;
+	  register uint32_t oldcrc32;
 
-      oldcrc32 = 0xFFFFFFFF;
+	  oldcrc32 = 0xFFFFFFFF;
 
-      for ( ; len; --len, ++buf)
-      {
-            oldcrc32 = UPDC32(*buf, oldcrc32);
-      }
+	  for ( ; len; --len, ++buf)
+	  {
+			oldcrc32 = UPDC32(*buf, oldcrc32);
+	  }
 
-      return ~oldcrc32;
+	  return ~oldcrc32;
 }
