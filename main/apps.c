@@ -112,30 +112,20 @@ bool is_our_nbp_lkup(llap_packet* packet, char* nbptype, nbp_return_t* addr) {
 	unsigned char* ddp_payload;
 	unsigned char* nbp_tuple;
 
+	// First, we check whether this is a broadcast NBP lookup.
 	if (!is_nbp_packet(packet)) {
 		return false;
 	}
 	
-	// First, we check whether this is a broadcast DDP packet.
-	if (packet->packet[0] != 255) {
-		return false;
-	}
-	if (packet->packet[2] != 1) {
+	if (ddp_destination_node(packet) != 255) {
 		return false;
 	}
 	
-	// NBP?  Check DDP type and packet length
-	if (packet->length < 10 || packet->packet[7] != 2) {
+	if (nbp_function_code(packet) != NBP_LKUP) {
 		return false;
 	}
 	
-	start_of_ddp_payload = 8;
-	ddp_payload = packet->packet + 8;
-	
-	// Are we a lookup?
-	if (ddp_payload[0] >> 4 != 2) {
-		return false;
-	}
+	ddp_payload = packet->packet + ddp_payload_offset(packet);
 	
 	// Do we have more than zero tuples?
 	if ((ddp_payload[0] & 0xF) < 1) {

@@ -29,8 +29,11 @@ int ddp_payload_offset(llap_packet* packet);
 
 /* NBP */
 
+#define NBP_LKUP 2
+
 bool is_nbp_packet(llap_packet* packet);
 
+int nbp_function_code(llap_packet* packet);
 
 /* ATP */
 

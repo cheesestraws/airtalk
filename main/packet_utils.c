@@ -74,6 +74,16 @@ bool is_nbp_packet(llap_packet* packet) {
 	return is_ddp_packet(packet) && (ddp_type(packet) == 2);
 }
 
+int nbp_function_code(llap_packet* packet) {
+	int p = ddp_payload_offset(packet);
+	
+	NUM_LEN_GUARD(p);
+
+	// Top nybble of the first byte of the packet
+	return packet->packet[p] >> 4;
+}
+
+
 
 /* ATP */
 
