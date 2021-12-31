@@ -37,6 +37,7 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 		turn_led_off(WIFI_GREEN_LED);
 		turn_led_on(WIFI_RED_LED);
 		wifi_ready = false;
+		scan_blocking(); 
 		scan_blocking(); // Do a scan so we have some info when we next connect
 		esp_wifi_connect();
 	} else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {

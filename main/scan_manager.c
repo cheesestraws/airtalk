@@ -42,10 +42,15 @@ void scan_blocking(void) {
 	ESP_ERROR_CHECK(esp_wifi_scan_get_ap_num(&ap_count));
 	// should probably clamp ap_count to some max but meh
 	
+	if (ap_count == 0) {
+		return;
+	}
+	
 	wifi_ap_record_t* aps;
 	aps = malloc(ap_count * sizeof(wifi_ap_record_t));
 	if (aps == NULL) {
 		turn_led_on(OH_NO_LED);
+		ESP_LOGE(TAG, "malloc() failed when allocating %d aps!", ap_count);
 		return;
 	}
 	esp_wifi_scan_get_ap_records(&ap_count, aps);

@@ -17,6 +17,7 @@ void storage_init() {
 	}
 	if (err) {
 		turn_led_on(OH_NO_LED);
+		ESP_LOGE(TAG, "could not init NVS!");
 	}
 }
 
