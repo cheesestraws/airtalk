@@ -16,6 +16,8 @@
 #include "pstrings.h"
 #include "storage.h"
 
+#define REQUIRE(x) if(!(x)) { return false; }
+
 const char* TAG = "APPS";
 
 QueueHandle_t qFromUART, qToUART, qToUDP;
@@ -107,56 +109,40 @@ void send_fake_nbp_LkUpReply(uint8_t node, uint8_t socket, uint8_t enumerator,
 }
 
 bool is_our_nbp_lkup(llap_packet* packet, char* nbptype, nbp_return_t* addr) {
-	int start_of_ddp_payload;
-	unsigned char nbp_id;
-	unsigned char* ddp_payload;
-	unsigned char* nbp_tuple;
-
-	// First, we check whether this is a broadcast NBP lookup.
-	if (!is_nbp_packet(packet)) {
+	// First, we check whether this is a broadcast NBP lookup with at least one
+	// tuple.
+	REQUIRE(is_nbp_packet(packet));
+	REQUIRE(ddp_destination_node(packet) == 255);
+	REQUIRE(nbp_function_code(packet) == NBP_LKUP);
+	REQUIRE(nbp_tuple_count(packet) > 0);
+			
+	// Now we extract the first tuple and check whether the type is the one
+	// our caller wants.
+	nbp_tuple_t tuple = nbp_tuple(packet, 0);
+	if (!tuple.ok) {
 		return false;
 	}
-	
-	if (ddp_destination_node(packet) != 255) {
-		return false;
-	}
-	
-	if (nbp_function_code(packet) != NBP_LKUP) {
-		return false;
-	}
-	
-	ddp_payload = packet->packet + ddp_payload_offset(packet);
-	
-	// Do we have more than zero tuples?
-	if ((ddp_payload[0] & 0xF) < 1) {
-		return false;
-	}
-	
-	nbp_id = ddp_payload[1];
-	nbp_tuple = ddp_payload + 2;
 		
-	if (nbp_tuple[5] > 32) {
+	// let's check our type string is actually a protocol-compliant length.
+	// just in case.
+	
+	if (pstrlen(tuple.type) > 32) {
 		return false;
 	}
 
-	unsigned char* start_of_type = nbp_tuple + 6 + nbp_tuple[5];
-	
-	// check type length
-	if (*start_of_type > 32) {
-		return false;
-	}
-	
+	// Now compare.  Note that the tuple contains pascal strings, so we have
+	// to convert it.
 	char typename[33];
-	memcpy(typename, start_of_type + 1, *start_of_type);
-	typename[*start_of_type] = '\0';
-		
+	pstrncpy(typename, tuple.type, 32);
 	if (strncmp(typename, nbptype, 33) != 0) {
 		return false;
 	}
 	
-	addr->node = nbp_tuple[2];
-	addr->socket = nbp_tuple[3];
-	addr->nbp_id = nbp_id;
+	// If we get to this point, we care about this update, so fill in the 
+	// return address for the caller.
+	addr->node = tuple.node;
+	addr->socket = tuple.socket;
+	addr->nbp_id = nbp_id(packet);
 
 	return true;
 }

@@ -31,9 +31,27 @@ int ddp_payload_offset(llap_packet* packet);
 
 #define NBP_LKUP 2
 
-bool is_nbp_packet(llap_packet* packet);
+// an nbp_tuple is a tuple of pointers to *Pascal strings* inside an NBP
+// packet.  Its lifetime is tied to that of its parent packet.  Do not use it
+// after its corresponding packet has been relinquished or freed.
+typedef struct {
+	bool ok;
 
+	uint16_t network;
+	uint8_t node;
+	uint8_t socket;
+	uint8_t enumerator;
+	
+	unsigned char* object;
+	unsigned char* type;
+	unsigned char* zone;
+} nbp_tuple_t;
+
+bool is_nbp_packet(llap_packet* packet);
 int nbp_function_code(llap_packet* packet);
+int nbp_tuple_count(llap_packet* packet);
+int nbp_id(llap_packet* packet);
+nbp_tuple_t nbp_tuple(llap_packet* packet, int tuple);
 
 /* ATP */
 
