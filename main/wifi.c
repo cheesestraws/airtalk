@@ -21,6 +21,7 @@ static const char* TAG = "APP-WIFI";
 
 esp_netif_t* wifi_if = NULL;
 bool wifi_ready = false;
+bool ssid_configured = false;
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 								int32_t event_id, void* event_data)
@@ -31,7 +32,9 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 		turn_led_on(WIFI_RED_LED);
 		scan_blocking();
 		wifi_ready = false;
-		esp_wifi_connect();
+		if (ssid_configured) {
+			esp_wifi_connect();
+		}
 	} else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
 		ESP_LOGI(TAG,"connection died");
 		turn_led_off(WIFI_GREEN_LED);
@@ -64,6 +67,10 @@ void init_at_wifi(void)
 	wifi_config_t wifi_config = {0};
 	get_wifi_details((char*)wifi_config.sta.ssid, 64, (char*)wifi_config.sta.password, 64);
 	ESP_LOGI(TAG,"details from nvs: ssid %s, pwd %s", wifi_config.sta.ssid, wifi_config.sta.password);
+	// do we have an ssid?
+	if (wifi_config.sta.ssid[0] != '\0') {
+		ssid_configured = true;
+	}
 
 	ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA) );
 	ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
