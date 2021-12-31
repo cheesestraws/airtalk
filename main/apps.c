@@ -156,7 +156,6 @@ bool is_our_nbp_lkup(llap_packet* packet, char* nbptype, nbp_return_t* addr) {
 	
 	addr->node = nbp_tuple[2];
 	addr->socket = nbp_tuple[3];
-	addr->enumerator = nbp_tuple[4];
 	addr->nbp_id = nbp_id;
 
 	return true;
@@ -212,7 +211,7 @@ void apps_runloop(void* unused) {
 		if (xQueueReceive(qFromUART, &packet, portMAX_DELAY)) {
 			if (is_our_nbp_lkup(packet, "AirTalkAP", &nbp_addr)) {
 				ESP_LOGI(TAG, "nbp lkup");
-				scan_and_send_results(nbp_addr.node, nbp_addr.socket, nbp_addr.nbp_id, nbp_addr.enumerator);
+				scan_and_send_results(nbp_addr.node, nbp_addr.socket, nbp_addr.nbp_id);
 			}
 			
 			if (handle_configuration_packet(packet)) {
