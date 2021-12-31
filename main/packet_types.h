@@ -15,7 +15,6 @@ typedef struct {
 	uint8_t node;
 	uint8_t socket;
 	uint8_t nbp_id;
-	uint8_t enumerator;
 } nbp_return_t;
 
 #endif

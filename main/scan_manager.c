@@ -91,15 +91,13 @@ void start_scan_manager(void) {
 	xTaskCreate(scan_manager_runloop, "SCANMAN", 4096, NULL, tskIDLE_PRIORITY, &scanner_task);
 }
 
-void scan_and_send_results(uint8_t node, uint8_t socket, uint8_t nbp_id, uint8_t enumerator) {
+void scan_and_send_results(uint8_t node, uint8_t socket, uint8_t nbp_id) {
 	xSemaphoreTake(scan_state.lock, portMAX_DELAY);
 	
 	time_t now = time(NULL);
 	
 	// Are the results young enough to send?
 	if (scan_state.aps != NULL && scan_state.when > (now - 30)) {
-		ESP_LOGI(TAG, "would send results to %d:%d enum %d", node, socket, enumerator);
-		
 		for (int i = 0; i < scan_state.ap_count; i++) {	
 			// we can't deal with ssids longer than 32 characters (?)
 			if (strlen((char*)scan_state.aps[i].ssid) > 32) {
