@@ -125,7 +125,6 @@ bool is_our_nbp_lkup(llap_packet* packet, char* nbptype, nbp_return_t* addr) {
 		
 	// let's check our type string is actually a protocol-compliant length.
 	// just in case.
-	
 	if (pstrlen(tuple.type) > 32) {
 		return false;
 	}
@@ -149,24 +148,14 @@ bool is_our_nbp_lkup(llap_packet* packet, char* nbptype, nbp_return_t* addr) {
 
 bool handle_configuration_packet(llap_packet* packet) {
 	// We're looking for an ATP TREQ packet...
-	
-	if (!is_atp_packet(packet)) {
-		return false;
-	}
-	
-	if (atp_function_code(packet) != ATP_TREQ) {
-		return false;
-	}
+	REQUIRE(is_atp_packet(packet));
+	REQUIRE(atp_function_code(packet) == ATP_TREQ);
 	
 	// ... aimed at a broadcast address ...
-	if (ddp_destination_node(packet) != 255) {
-		return false;
-	}
+	REQUIRE(ddp_destination_node(packet) == 255);
 	
 	// ... with a destination socket of 4 ...
-	if (ddp_destination_socket(packet) != 4) {
-		return false;
-	}
+	REQUIRE(ddp_destination_socket(packet) == 4);
 	
 	unsigned char* payload = &packet->packet[atp_payload_offset(packet)];
 	
