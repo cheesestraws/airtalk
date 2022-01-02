@@ -9,6 +9,11 @@
 /* packet_utils.{c,h} include utilities for peering into AppleTalk packets
    to work out what they are. */
    
+/* LLAP */
+
+int llap_type(llap_packet* packet);
+int llap_destination_node(llap_packet* packet);
+   
 /* DDP */
    
 // is_ddp_packet returns true if an LLAP packet is a DDP packet, false if not.

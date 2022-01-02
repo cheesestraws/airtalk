@@ -193,9 +193,7 @@ void udp_tx_runloop(void *pvParameters) {
 	unsigned char outgoing_buffer[605 + 4] = { 0 }; // LToUDP has 4 byte header
 	struct sockaddr_in dest_addr = {0};
 	int err = 0;
-	
-	static int consecutive_handshakes = 0;
-	
+		
 	dest_addr.sin_addr.s_addr = inet_addr("239.192.76.84");
 	dest_addr.sin_family = AF_INET;
 	dest_addr.sin_port = htons(1954);
@@ -218,21 +216,10 @@ void udp_tx_runloop(void *pvParameters) {
 		// If it's an RTS or a CTS packet, then no
 		if (packet->length == 5) {
 			if (packet->packet[2] == 0x84 || packet->packet[2] == 0x85) {
-				consecutive_handshakes++;
-				
-				if (consecutive_handshakes > 10) {
-					flash_led_once(LT_RED_LED);
-					ESP_LOGE(TAG, "%d consecutive handshakes! reinitialisng tashtalk", consecutive_handshakes);
-					uart_init_tashtalk();
-					consecutive_handshakes = 0;
-					
-				}
 				goto skip_processing;
 			}
 		}
-		
-		consecutive_handshakes = 0;
-		
+				
 		/* TODO: if this is an ENQ for a node ID that is not in our recently
 		   seen table, pass it on, otherwise block all ENQs */
 		   

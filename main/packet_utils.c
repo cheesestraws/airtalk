@@ -33,6 +33,19 @@ bool read_uint8(llap_packet* packet, int* cursor, uint8_t* result) {
 }
 
 
+/* LLAP */
+
+int llap_type(llap_packet* packet) {
+	NUM_LEN_GUARD(2);
+	return packet->packet[2];
+}
+
+int llap_destination_node(llap_packet* packet) {
+	NUM_LEN_GUARD(0);
+	return packet->packet[0];
+}
+
+
 /* DDP */
 
 #define LLAP_TYPE_OFFSET 2

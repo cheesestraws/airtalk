@@ -11,6 +11,8 @@
 #include "led.h"
 #include "tashtalk.h"
 #include "node_table.h"
+#include "packet_types.h"
+#include "packet_utils.h"
 
 #include "uart.h"
 
@@ -50,10 +52,38 @@ void uart_write_node_table(int uart_num, node_update_packet_t* packet) {
 	ESP_LOGI(TAG, "sent nodebits: %s", debugbuff);
 }
 
+node_table_t* get_proxy_nodes() {
+	return &node_table;
+}
+
 void uart_init_tashtalk(void) {
 	char init[1024] = { 0 };
 	uart_write_bytes(uart_num, init, 1024);
 	uart_write_node_table(uart_num, &node_table_packet);
+}
+
+void uart_check_for_tx_wedge(llap_packet* packet) {
+	// Sometimes, if buffer weirdness happens, tashtalk gets wedged.  In those
+	// cases, we need to detect it.  We can detect this by looking for strings
+	// of handshaking requests.
+	//
+	// This works because we know that we should respond to a CTS for one of our
+	// nodes.  If we get more than one burst of CTSes, something's gone wrong
+	// and we should reset the tashtalk to a known state.
+	
+	static int handshake_count = 0;
+	if (llap_type(packet) == 0x84 || llap_type(packet) == 0x85) {
+		handshake_count++;
+		
+		if (handshake_count > 10) {
+			flash_led_once(LT_RED_LED);
+			ESP_LOGE(TAG, "%d consecutive handshakes! reinitialising tashtalk", handshake_count);
+			uart_init_tashtalk();
+			handshake_count = 0;			
+		}
+	} else {
+		handshake_count = 0;
+	}
 }
 
 void uart_init(void) {	

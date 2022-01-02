@@ -10,6 +10,8 @@
 #include "packet_types.h"
 #include "crc.h"
 #include "led.h"
+#include "uart.h"
+#include "packet_utils.h"
 
 static const char* TAG = "tashtalk";
 
@@ -40,7 +42,22 @@ void append(llap_packet* packet, unsigned char byte) {
 }
 
 void do_something_sensible_with_packet(tashtalk_rx_state_t* state) {
+	node_table_t* destinations = get_proxy_nodes();
+
    	flash_led_once(LT_RX_GREEN);
+
+	// Should we forward this packet?  If it's aimed at broadcast or a node
+	// we've seen on the IP side, yes
+	uint8_t destination = llap_destination_node(state->packet_in_progress);
+	if (destination != 255) {
+		if (!nt_fresh(destinations, destination, 3600)) {
+			bp_relinquish(state->buffer_pool, (void**)&state->packet_in_progress);
+			return;
+		}
+	}
+	
+	uart_check_for_tx_wedge(state->packet_in_progress);
+   	
 	xQueueSendToBack(state->output_queue, &state->packet_in_progress, portMAX_DELAY);
 }
 
