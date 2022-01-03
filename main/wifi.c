@@ -27,7 +27,6 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 								int32_t event_id, void* event_data)
 {
 	if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START) {
-		ESP_LOGI(TAG,"attempting to connect");
 		turn_led_off(WIFI_GREEN_LED);
 		turn_led_on(WIFI_RED_LED);
 		scan_blocking();
@@ -36,7 +35,6 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 			esp_wifi_connect();
 		}
 	} else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
-		ESP_LOGI(TAG,"connection died");
 		turn_led_off(WIFI_GREEN_LED);
 		turn_led_on(WIFI_RED_LED);
 		wifi_ready = false;

@@ -146,9 +146,9 @@ void udp_rx_runloop(void *pvParameters) {
 				flash_led_once(UDP_RED_LED);
 				break;
 			}
-			if (len > 603) {
+			if (len > 609) {
 				flash_led_once(UDP_RED_LED);
-				ESP_LOGE(TAG, "packet too long");
+				ESP_LOGE(TAG, "packet too long: %d", len);
 				continue;
 			}
 			if (len > 7) {
