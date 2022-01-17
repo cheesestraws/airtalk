@@ -13,6 +13,7 @@
 #include "node_table.h"
 #include "packet_types.h"
 #include "packet_utils.h"
+#include "hw.h"
 
 #include "uart.h"
 
@@ -33,11 +34,6 @@ QueueHandle_t uart_tx_queue = NULL;
 
 uint8_t uart_buffer[RX_BUFFER_SIZE];
 
-
-#define UART_TX GPIO_NUM_14
-#define UART_RX GPIO_NUM_27
-#define UART_RTS GPIO_NUM_26
-#define UART_CTS GPIO_NUM_12
 
 void uart_write_node_table(int uart_num, node_update_packet_t* packet) {
 	uart_write_bytes(uart_num, "\x02", 1);

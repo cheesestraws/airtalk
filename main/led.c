@@ -3,6 +3,8 @@
 #include "freertos/task.h"
 #include "esp_log.h"
 
+#include "hw.h"
+
 #include "led.h"
 
 #define FLASH_LENGTH 125
@@ -28,55 +30,55 @@ static led_config_t led_config[] = {
 	[WIFI_RED_LED] = {
 		.enabled = 1,
 		.name = "WIFI_RED_LED",
-		.gpio_pin = 23
+		.gpio_pin = WIFI_RED_LED_PIN
 	},
 	
 	[WIFI_GREEN_LED] = {
 		.enabled = 1,
 		.name = "WIFI_GREEN_LED",
-		.gpio_pin = 22
+		.gpio_pin = WIFI_GREEN_LED_PIN
 	},
 	
 	[UDP_RED_LED] = {
 		.enabled = 1,
 		.name = "UDP_RED_LED",
-		.gpio_pin = 19
+		.gpio_pin = UDP_RED_LED_PIN
 	},
 	
 	[UDP_TX_GREEN] = {
 		.enabled = 1,
 		.name = "UDP_TX_GREEN",
-		.gpio_pin = 18
+		.gpio_pin = UDP_TX_GREEN_PIN
 	},
 	
 	[UDP_RX_GREEN] = {
 		.enabled = 1,
 		.name = "UDP_RX_GREEN",
-		.gpio_pin = 5
+		.gpio_pin = UDP_RX_GREEN_PIN
 	},
 	
 	[LT_RED_LED] = {
 		.enabled = 1,
 		.name = "LT_RED_LED",
-		.gpio_pin = 17
+		.gpio_pin = LT_RED_LED_PIN
 	},
 	
 	[LT_TX_GREEN] = {
 		.enabled = 1,
 		.name = "LT_TX_GREEN",
-		.gpio_pin = 16
+		.gpio_pin = LT_TX_GREEN_PIN
 	},
 	
 	[LT_RX_GREEN] = {
 		.enabled = 1,
 		.name = "LT_RX_GREEN",
-		.gpio_pin = 4
+		.gpio_pin = LT_RX_GREEN_PIN
 	},
 	
 	[OH_NO_LED] = {
 		.enabled = 1,
 		.name = "OH_NO_LED",
-		.gpio_pin = 0
+		.gpio_pin = OH_NO_LED_PIN
 	},
 
 };
@@ -92,9 +94,13 @@ void led_init(void) {
 			continue;
 		}
 		
+		ESP_LOGI(TAG, "doing %s: %d", led_config[i].name, led_config[i].gpio_pin);
+		
 		gpio_reset_pin(led_config[i].gpio_pin);
 		gpio_set_direction(led_config[i].gpio_pin, GPIO_MODE_OUTPUT);
 		gpio_set_level(led_config[i].gpio_pin, 1);
+		
+		ESP_LOGI(TAG, "done %d", led_config[i].gpio_pin);
 	}
 	
 	vTaskDelay(250 / portTICK_PERIOD_MS);
