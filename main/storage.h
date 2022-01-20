@@ -7,4 +7,8 @@ void storage_init();
 void store_wifi_details(char* ssid, char* pwd);
 void get_wifi_details(char* ssid, size_t ssid_len, char* pwd, size_t pwd_len);
 
+void store_recovery_for_next_boot();
+void clear_recovery();
+bool get_recovery();
+
 #endif

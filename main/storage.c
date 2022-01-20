@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include "storage.h"
 
 #include "esp_system.h"
@@ -54,4 +56,57 @@ void get_wifi_details(char* ssid, size_t ssid_len, char* pwd, size_t pwd_len) {
 	nvs_get_str(h, "pwd", pwd, &pwd_len);
 	
 	nvs_close(h);
+}
+
+void store_recovery_for_next_boot() {
+	esp_err_t err;
+	nvs_handle_t h;
+
+	err = nvs_open("airtalk", NVS_READWRITE, &h);
+	if (err != ESP_OK) {
+		ESP_LOGE(TAG, "couldn't write NVS: %s", esp_err_to_name(err));
+		turn_led_on(OH_NO_LED);
+		return;
+	}
+
+	nvs_set_u8(h, "recovery", 1);	
+	
+	nvs_commit(h);
+	nvs_close(h);
+}
+
+void clear_recovery() {
+	esp_err_t err;
+	nvs_handle_t h;
+
+
+	err = nvs_open("airtalk", NVS_READWRITE, &h);
+	if (err != ESP_OK) {
+		ESP_LOGE(TAG, "couldn't write NVS: %s", esp_err_to_name(err));
+		turn_led_on(OH_NO_LED);
+		return;
+	}
+
+	nvs_set_u8(h, "recovery", 0);
+	
+	nvs_commit(h);
+	nvs_close(h);
+}
+
+bool get_recovery() {
+	esp_err_t err;
+	nvs_handle_t h;
+	uint8_t recovery = 0;
+
+	err = nvs_open("airtalk", NVS_READWRITE, &h);
+	if (err != ESP_OK) {
+		ESP_LOGE(TAG, "couldn't write NVS: %s", esp_err_to_name(err));
+		turn_led_on(OH_NO_LED);
+		return false;
+	}
+	
+	nvs_get_u8(h, "recovery", &recovery);
+	
+	nvs_close(h);
+	return recovery == 1;
 }
