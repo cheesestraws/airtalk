@@ -13,6 +13,7 @@ set(srcs
 	 "packet_utils.c"
 	 "pstrings.c"
 	 "storage.c"
+	 "recovery_listener.c"
 	 "main.c"
 )
         

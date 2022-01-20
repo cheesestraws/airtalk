@@ -16,6 +16,7 @@
 #include "apps.h"
 #include "scan_manager.h"
 #include "storage.h"
+#include "recovery_listener.h"
 
 void recovery_main(void) {
 	printf("would enter recovery here");
@@ -48,7 +49,7 @@ void app_main(void)
 	printf("wifi init\n");
 	init_at_wifi();
 	
-	
+	start_recovery_listener();	
 	start_udp(packet_pool, AppsToUDP, UDPtoUART);
 	start_scan_manager();
 	start_apps(packet_pool, UARTtoApps, UDPtoUART, AppsToUDP);
