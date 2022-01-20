@@ -13,5 +13,6 @@ void flash_led_once(LED led);
 void flash_all_leds_once(void);
 void turn_led_on(LED led);
 void turn_led_off(LED led);
+void turn_all_leds_on(void);
 
 #endif

@@ -19,7 +19,13 @@
 #include "recovery_listener.h"
 
 void recovery_main(void) {
+	led_init();
+	turn_all_leds_on();
+
 	printf("would enter recovery here");
+	while(1) {
+		vTaskDelay(1000 / portTICK_PERIOD_MS);
+	}
 }
 
 void app_main(void)

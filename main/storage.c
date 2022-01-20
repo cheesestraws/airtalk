@@ -69,8 +69,13 @@ void store_recovery_for_next_boot(void) {
 		return;
 	}
 
-	nvs_set_u8(h, "recovery", 1);	
-	
+	err = nvs_set_u8(h, "recovery", 1);	
+	if (err != ESP_OK) {
+		ESP_LOGE(TAG, "couldn't write NVS: %s", esp_err_to_name(err));
+		turn_led_on(OH_NO_LED);
+		return;
+	}
+
 	nvs_commit(h);
 	nvs_close(h);
 }
@@ -87,7 +92,7 @@ void clear_recovery(void) {
 		return;
 	}
 
-	nvs_set_u8(h, "recovery", 0);
+	err = nvs_set_u8(h, "recovery", 0);
 	
 	nvs_commit(h);
 	nvs_close(h);
