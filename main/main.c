@@ -17,8 +17,22 @@
 #include "scan_manager.h"
 #include "storage.h"
 
+void recovery_main(void) {
+	printf("would enter recovery here");
+}
+
 void app_main(void)
 {
+	printf("storage init\n");
+	storage_init();
+	uint8_t recovery = 0;
+	recovery = get_recovery();
+	clear_recovery();
+	if (recovery) {
+		recovery_main();
+	}
+	
+
 	// A pool of buffers used for LLAP packets/frames on the way through
 	buffer_pool_t* packet_pool = new_buffer_pool(180, sizeof(llap_packet));
 	
@@ -29,8 +43,6 @@ void app_main(void)
 
 	printf("led init\n");
 	led_init();
-	printf("storage init\n");
-	storage_init();
 	printf("uart init\n");
 	uart_init();
 	printf("wifi init\n");

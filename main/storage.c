@@ -58,7 +58,7 @@ void get_wifi_details(char* ssid, size_t ssid_len, char* pwd, size_t pwd_len) {
 	nvs_close(h);
 }
 
-void store_recovery_for_next_boot() {
+void store_recovery_for_next_boot(void) {
 	esp_err_t err;
 	nvs_handle_t h;
 
@@ -75,7 +75,7 @@ void store_recovery_for_next_boot() {
 	nvs_close(h);
 }
 
-void clear_recovery() {
+void clear_recovery(void) {
 	esp_err_t err;
 	nvs_handle_t h;
 
@@ -93,7 +93,7 @@ void clear_recovery() {
 	nvs_close(h);
 }
 
-bool get_recovery() {
+bool get_recovery(void) {
 	esp_err_t err;
 	nvs_handle_t h;
 	uint8_t recovery = 0;
