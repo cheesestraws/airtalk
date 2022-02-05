@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+
 #include "sdkconfig.h"
 #include "driver/gpio.h"
 #include "freertos/FreeRTOS.h"
@@ -16,11 +18,16 @@
 #include "apps.h"
 #include "scan_manager.h"
 #include "storage.h"
+#include "recovery.h"
 #include "recovery_listener.h"
 
 void recovery_main(void) {
+	storage_init();
 	led_init();
 	turn_all_leds_on();
+
+	init_recovery_wifi();
+	start_recovery_webserver();
 
 	printf("would enter recovery here");
 	while(1) {

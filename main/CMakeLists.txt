@@ -14,6 +14,7 @@ set(srcs
 	 "pstrings.c"
 	 "storage.c"
 	 "recovery_listener.c"
+	 "recovery.c"
 	 "main.c"
 )
         
