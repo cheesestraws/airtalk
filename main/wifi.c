@@ -63,7 +63,7 @@ void init_at_wifi(void)
 	ESP_ERROR_CHECK(esp_event_handler_register(IP_EVENT, IP_EVENT_STA_GOT_IP, &wifi_event_handler, NULL));
 
 	wifi_config_t wifi_config = {0};
-	get_wifi_details((char*)wifi_config.sta.ssid, 64, (char*)wifi_config.sta.password, 64);
+	get_wifi_details((char*)wifi_config.sta.ssid, 32, (char*)wifi_config.sta.password, 64);
 	ESP_LOGI(TAG,"details from nvs: ssid %s, pwd %s", wifi_config.sta.ssid, wifi_config.sta.password);
 	// do we have an ssid?
 	if (wifi_config.sta.ssid[0] != '\0') {
