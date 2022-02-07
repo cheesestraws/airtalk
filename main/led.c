@@ -163,3 +163,16 @@ void flash_all_leds_once(void) {
 		flash_led_once(i);
 	}
 }
+
+void turn_all_leds_on(void) {
+	int num_of_leds = sizeof(led_config) / sizeof(led_config[0]);
+	
+	for(int i = 0; i < num_of_leds; i++) {
+		if (led_config[i].enabled != 1) {
+			continue;
+		}
+		
+		turn_led_on(i);
+	}
+}
+

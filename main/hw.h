@@ -2,6 +2,8 @@
 
 #ifdef REV0
 // REV0 => through-hole prototype
+
+#define RECOVER_BUTTON GPIO_NUM_34
 #define UART_TX GPIO_NUM_14
 #define UART_RX GPIO_NUM_27
 #define UART_RTS GPIO_NUM_26
@@ -20,6 +22,8 @@
 
 #ifdef REVA
 // REVA => surface-mount prototype
+#define RECOVER_BUTTON GPIO_NUM_0
+
 #define UART_TX GPIO_NUM_15
 #define UART_RX GPIO_NUM_13
 #define UART_RTS GPIO_NUM_5
