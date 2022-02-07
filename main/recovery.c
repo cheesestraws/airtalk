@@ -17,6 +17,7 @@
 #include "lwip/sys.h"
 
 #include "recovery.h"
+#include "storage.h"
 #include "html_page.h"
 
 const static char* TAG = "recovery-app";
@@ -106,10 +107,10 @@ static esp_err_t root_handler(httpd_req_t *req) {
 	// urlencoded ssid and key might be up to 3x the length of 'real'
 	// ssid and key if every character is %-encoded.  (Note the last char
 	// of each is a null, so we don't actually have 3* number of characters)
-	bool got_ssid;
+	bool got_ssid = false;
 	char ssid[33] = {0};
 	char encoded_ssid[97] = {0};
-	bool got_key;
+	bool got_key = false;
 	char key[65] = {0};
 	char encoded_key[193] = {0};
 
@@ -136,7 +137,8 @@ static esp_err_t root_handler(httpd_req_t *req) {
 	if (got_ssid && got_key) {
 		httpd_resp_send(req, ok_page, HTTPD_RESP_USE_STRLEN);
 		ESP_LOGI(TAG, "would save (%s, %s) and reboot here", ssid, key);
-		
+		store_wifi_details(ssid, key);
+		esp_restart();
 	} else {
 		httpd_resp_send(req, details_page, HTTPD_RESP_USE_STRLEN);
 	}
