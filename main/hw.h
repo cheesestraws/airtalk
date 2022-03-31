@@ -18,6 +18,8 @@
 #define LT_TX_GREEN_PIN 16
 #define LT_RX_GREEN_PIN 4
 #define OH_NO_LED_PIN 0
+#define GENERIC_ERR_LED_PIN 34
+#define GENERIC_ACT_LED_PIN 35
 #endif
 
 #ifdef REVA
@@ -38,4 +40,7 @@
 #define LT_TX_GREEN_PIN 25
 #define LT_RX_GREEN_PIN 26
 #define OH_NO_LED_PIN 18
+#define GENERIC_ERR_LED_PIN 5
+#define GENERIC_ACT_LED_PIN 16
+
 #endif

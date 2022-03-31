@@ -19,6 +19,7 @@ typedef struct {
 	int enabled; 
 	char* name;
 	int gpio_pin;
+	int also;
 	
 	/* don't initialise these */
 	
@@ -42,37 +43,43 @@ static led_config_t led_config[] = {
 	[UDP_RED_LED] = {
 		.enabled = 1,
 		.name = "UDP_RED_LED",
-		.gpio_pin = UDP_RED_LED_PIN
+		.gpio_pin = UDP_RED_LED_PIN,
+		.also = ANY_ERR_LED
 	},
 	
 	[UDP_TX_GREEN] = {
 		.enabled = 1,
 		.name = "UDP_TX_GREEN",
-		.gpio_pin = UDP_TX_GREEN_PIN
+		.gpio_pin = UDP_TX_GREEN_PIN,
+		.also = ANY_ACT_LED
 	},
 	
 	[UDP_RX_GREEN] = {
 		.enabled = 1,
 		.name = "UDP_RX_GREEN",
-		.gpio_pin = UDP_RX_GREEN_PIN
+		.gpio_pin = UDP_RX_GREEN_PIN,
+		.also = ANY_ACT_LED
 	},
 	
 	[LT_RED_LED] = {
 		.enabled = 1,
 		.name = "LT_RED_LED",
-		.gpio_pin = LT_RED_LED_PIN
+		.gpio_pin = LT_RED_LED_PIN,
+		.also = ANY_ERR_LED
 	},
 	
 	[LT_TX_GREEN] = {
 		.enabled = 1,
 		.name = "LT_TX_GREEN",
-		.gpio_pin = LT_TX_GREEN_PIN
+		.gpio_pin = LT_TX_GREEN_PIN,
+		.also = ANY_ACT_LED
 	},
 	
 	[LT_RX_GREEN] = {
 		.enabled = 1,
 		.name = "LT_RX_GREEN",
-		.gpio_pin = LT_RX_GREEN_PIN
+		.gpio_pin = LT_RX_GREEN_PIN,
+		.also = ANY_ACT_LED
 	},
 	
 	[OH_NO_LED] = {
@@ -80,7 +87,18 @@ static led_config_t led_config[] = {
 		.name = "OH_NO_LED",
 		.gpio_pin = OH_NO_LED_PIN
 	},
-
+	
+	[ANY_ERR_LED] = {
+		.enabled = 1,
+		.name = "ANY_ERR_LED",
+		.gpio_pin = GENERIC_ERR_LED_PIN
+	},
+	
+	[ANY_ACT_LED] = {
+		.enabled = 1,
+		.name = "ANY_ACT_LED",
+		.gpio_pin = GENERIC_ACT_LED_PIN
+	},
 };
 
 /* led_init sets up gpio pins and starts the background tasks for each LED */
@@ -150,6 +168,11 @@ void flash_led_once(LED led) {
 	}
 	
 	xTaskNotify(led_config[led].task, 1, eSetValueWithOverwrite);
+	
+	// do we have a second LED we should also flash?
+	if (led_config[led].also) {
+		flash_led_once(led_config[led].also);
+	}
 }
 
 void flash_all_leds_once(void) {
