@@ -7,6 +7,7 @@ Now that we've got that out the way: this directory hopefully contains all you n
 * The schematics are in the schematic/ directory.  How imaginative.
 * The PCB designs are in the boards/ directory, in both Gerber and EasyEDA format.
 * The BoM for the PCB design is in the bom/ directory.
+* The pick-and-place file for the PCB design is in the cpl/ directory.
 
 The whole thing has previously been fabbed and SMD assembled using the JLCPCB service.  Other services will probably work just as well.
 
