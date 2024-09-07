@@ -105,6 +105,14 @@ static led_config_t led_config[] = {
 void led_init(void) {
 	int num_of_leds = sizeof(led_config) / sizeof(led_config[0]);
 	
+	/* LEDs with a pin number of -1 should be disabled.  This is a bit
+	   manky but makes the hw.h file considerably more readable. */
+	for(int i = 0; i < num_of_leds; i++) {
+		if (led_config[i].gpio_pin == -1) {
+			led_config[i].enabled = 0;
+		}
+	}
+	
 	/* set up GPIO pin, light up each LED */
 	
 	for(int i = 0; i < num_of_leds; i++) {
