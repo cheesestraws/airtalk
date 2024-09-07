@@ -81,7 +81,7 @@ void scan_nonblocking(void) {
 }
 
 void scan_manager_runloop(void* param) {
-	unsigned int dummy_value = 0;
+	uint32_t dummy_value = 0;
 	
 	while(1) {
 		xTaskNotifyWait(0, 0, &dummy_value, portMAX_DELAY);

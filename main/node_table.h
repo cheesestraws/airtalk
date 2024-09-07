@@ -3,6 +3,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <time.h>
 
 /*	This file, and its corresponding C file, manage a node freshness table.
 	This table consists of a set of pairs mapping an LocalTalk node ID to

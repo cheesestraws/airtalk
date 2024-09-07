@@ -137,7 +137,7 @@ void led_init(void) {
 
 void led_runloop(void* param) {
 	LED led = (LED) param;
-	unsigned int dummy_value = 0;
+	uint32_t dummy_value = 0;
 	
 	/* We just run in a loop, waiting to be notified, flashing our little
 	   light, then going back to sleep again. */

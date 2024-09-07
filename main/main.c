@@ -7,7 +7,7 @@
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "esp_system.h"
-#include "esp_spi_flash.h"
+#include "spi_flash_mmap.h"
 
 #include "packet_types.h"
 #include "buffer_pool.h"
