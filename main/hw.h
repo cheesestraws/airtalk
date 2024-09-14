@@ -1,4 +1,4 @@
-#define REVA
+#define OMNITALK
 
 #ifdef REV0
 // REV0 => through-hole prototype
@@ -42,5 +42,27 @@
 #define OH_NO_LED_PIN 18
 #define GENERIC_ERR_LED_PIN 5
 #define GENERIC_ACT_LED_PIN 16
+
+#endif
+
+#ifdef OMNITALK
+#define RECOVER_BUTTON GPIO_NUM_0
+
+#define UART_TX GPIO_NUM_15
+#define UART_RX GPIO_NUM_2
+#define UART_RTS GPIO_NUM_13
+#define UART_CTS GPIO_NUM_35
+
+#define WIFI_RED_LED_PIN -1
+#define WIFI_GREEN_LED_PIN 13
+#define UDP_RED_LED_PIN -1
+#define UDP_TX_GREEN_PIN 4
+#define UDP_RX_GREEN_PIN 5
+#define LT_RED_LED_PIN -1
+#define LT_TX_GREEN_PIN 18
+#define LT_RX_GREEN_PIN 23
+#define OH_NO_LED_PIN -1
+#define GENERIC_ERR_LED_PIN -1
+#define GENERIC_ACT_LED_PIN -1
 
 #endif
