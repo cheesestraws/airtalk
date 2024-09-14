@@ -2,6 +2,7 @@ set(srcs
 	 "buffer_pool.c"
 	 "led.c"
 	 "wifi.c"
+	 "ethernet.c"
 	 "ip.c"
 	 "uart.c"
 	 "tashtalk.c"

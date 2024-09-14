@@ -46,6 +46,8 @@
 #endif
 
 #ifdef OMNITALK
+#define ETHERNET
+
 #define RECOVER_BUTTON GPIO_NUM_0
 
 #define UART_TX GPIO_NUM_2
