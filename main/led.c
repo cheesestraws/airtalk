@@ -171,8 +171,12 @@ void turn_led_off(LED led) {
 void flash_led_once(LED led) {
 	int num_of_leds = sizeof(led_config) / sizeof(led_config[0]);
 	
-	if (led >= num_of_leds || !led_config[led].enabled) {
+	if (led >= num_of_leds) {
 		ESP_LOGW(TAG, "attempt to flash illicit LED: %d", led);
+	}
+	
+	if (!led_config[led].enabled) {
+		return;
 	}
 	
 	xTaskNotify(led_config[led].task, 1, eSetValueWithOverwrite);
