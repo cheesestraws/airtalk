@@ -4,12 +4,25 @@
 #include <esp_netif_types.h>
 #include <esp_eth.h>
 #include <driver/gpio.h>
+#include <esp_mac.h>
 
 #include "hw.h"
-#include "mdns_service.h"
 #include "ethernet.h"
 
 static const char* TAG = "ETHERNET";
+
+#define BASE_HOSTNAME "airtalk"
+
+char *generate_hostname(void) {
+	uint8_t mac[6];
+	char   *hostname;
+	esp_read_mac(mac, ESP_MAC_WIFI_STA);
+	if (-1 == asprintf(&hostname, "%s-%02X%02X%02X", BASE_HOSTNAME, mac[3], mac[4], mac[5])) {
+		abort();
+	}
+
+	return hostname;
+}
 
 void ethernet_init(void) {
 #ifdef ETHERNET
@@ -20,8 +33,8 @@ void ethernet_init(void) {
 	eth_esp32_emac_config_t emac_config = ETH_ESP32_EMAC_DEFAULT_CONFIG();
 	emac_config.clock_config.rmii.clock_mode = EMAC_CLK_EXT_IN;
 	emac_config.clock_config.rmii.clock_gpio = EMAC_CLK_IN_GPIO;
-	emac_config.smi_gpio.mdc_num = 23;
-	emac_config.smi_gpio.mdio_num = 18;
+	emac_config.smi_gpio.mdc_num = ETH_MAC_MDC;
+	emac_config.smi_gpio.mdio_num = ETH_MAC_MDIO;
 	
 	esp_eth_mac_t *mac = esp_eth_mac_new_esp32(&emac_config, &mac_config);
 
@@ -32,9 +45,8 @@ void ethernet_init(void) {
 	esp_eth_phy_t *phy = esp_eth_phy_new_lan87xx(&phy_config);
 
 	// Enable external oscillator (pulled down at boot to allow IO0 strapping)
-	ESP_ERROR_CHECK(gpio_set_direction(GPIO_NUM_16, GPIO_MODE_OUTPUT));
-	ESP_ERROR_CHECK(gpio_set_level(GPIO_NUM_16, 1));
-	
+	ESP_ERROR_CHECK(gpio_set_direction(ETH_50MHZ_EN, GPIO_MODE_OUTPUT));
+	ESP_ERROR_CHECK(gpio_set_level(ETH_50MHZ_EN, 1));
 	
 	ESP_LOGD(TAG, "Starting Ethernet interface...");
 

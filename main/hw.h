@@ -46,7 +46,11 @@
 #endif
 
 #ifdef OMNITALK
+
 #define ETHERNET
+#define ETH_MAC_MDC 14
+#define ETH_MAC_MDIO 12
+#define ETH_50MHZ_EN 33
 
 #define RECOVER_BUTTON GPIO_NUM_0
 
