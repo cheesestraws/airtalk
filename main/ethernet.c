@@ -4,7 +4,6 @@
 #include <esp_netif_types.h>
 #include <esp_eth.h>
 #include <driver/gpio.h>
-#include <esp_mac.h>
 
 #include "hw.h"
 #include "net_common.h"

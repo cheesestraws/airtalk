@@ -19,8 +19,8 @@
 
 static const char* TAG = "APP-WIFI";
 
-esp_netif_t* wifi_if = NULL;
-bool wifi_ready = false;
+esp_netif_t* active_net_if = NULL;
+bool net_if_ready = false;
 bool ssid_configured = false;
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,
@@ -30,28 +30,28 @@ static void wifi_event_handler(void* arg, esp_event_base_t event_base,
 		turn_led_off(WIFI_GREEN_LED);
 		turn_led_on(WIFI_RED_LED);
 		scan_blocking();
-		wifi_ready = false;
+		net_if_ready = false;
 		if (ssid_configured) {
 			esp_wifi_connect();
 		}
 	} else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED) {
 		turn_led_off(WIFI_GREEN_LED);
 		turn_led_on(WIFI_RED_LED);
-		wifi_ready = false;
+		net_if_ready = false;
 		scan_blocking(); 
 		scan_blocking(); // Do a scan so we have some info when we next connect
 		esp_wifi_connect();
 	} else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP) {
 		turn_led_off(WIFI_RED_LED);
 		turn_led_on(WIFI_GREEN_LED);
-		wifi_ready = true;
+		net_if_ready = true;
 	}
 }
 
 
 void init_at_wifi(void)
 {
-	wifi_if = esp_netif_create_default_wifi_sta();
+	active_net_if = esp_netif_create_default_wifi_sta();
 
 	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 	ESP_ERROR_CHECK(esp_wifi_init(&cfg));
@@ -75,10 +75,10 @@ void init_at_wifi(void)
 	ESP_LOGI(TAG, "wifi_init_sta finished.");
 }
 
-esp_netif_t* get_wifi_intf(void) {
-	return wifi_if;
+esp_netif_t* get_active_net_intf(void) {
+	return active_net_if;
 }
 
-bool is_wifi_ready(void) {
-	return wifi_ready;
+bool is_net_if_ready(void) {
+	return net_if_ready;
 }
