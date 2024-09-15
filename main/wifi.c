@@ -13,14 +13,13 @@
 #include "lwip/err.h"
 #include "lwip/sys.h"
 
+#include "net_common.h"
 #include "led.h"
 #include "storage.h"
 #include "scan_manager.h"
 
 static const char* TAG = "APP-WIFI";
 
-esp_netif_t* active_net_if = NULL;
-bool net_if_ready = false;
 bool ssid_configured = false;
 
 static void wifi_event_handler(void* arg, esp_event_base_t event_base,

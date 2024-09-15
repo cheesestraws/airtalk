@@ -4,6 +4,9 @@
 
 #include "net_common.h"
 
+esp_netif_t* active_net_if = NULL;
+bool net_if_ready = false;
+
 #define BASE_HOSTNAME "airtalk"
 
 char *generate_hostname(void) {
