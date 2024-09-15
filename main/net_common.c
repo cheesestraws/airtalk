@@ -1,3 +1,7 @@
+#include <stdlib.h>
+
+#include <esp_mac.h>
+
 #include "net_common.h"
 
 #define BASE_HOSTNAME "airtalk"
