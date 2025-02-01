@@ -30,8 +30,10 @@ void recovery_listener_runloop(void* param) {
 }
 
 void start_recovery_listener(void) {
-	gpio_reset_pin(RECOVER_BUTTON);
-	gpio_set_direction(RECOVER_BUTTON, GPIO_MODE_INPUT);
+	if (RECOVER_BUTTON != -1) {
+		gpio_reset_pin(RECOVER_BUTTON);
+		gpio_set_direction(RECOVER_BUTTON, GPIO_MODE_INPUT);
 	
-	xTaskCreate(recovery_listener_runloop, "recovery-listener", 2048, NULL, tskIDLE_PRIORITY, NULL);
+		xTaskCreate(recovery_listener_runloop, "recovery-listener", 2048, NULL, tskIDLE_PRIORITY, NULL);
+	}
 }

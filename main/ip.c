@@ -37,21 +37,21 @@ void init_udp(void) {
 	
 	/* bail out early if we don't have a wifi network interface yet */
 	
-	if (get_wifi_intf() == NULL) {
+	if (get_active_net_intf() == NULL) {
 		ESP_LOGE(TAG, "wireless network interface does not exist.");
 		udp_error();
 		return;
 	}
 	
 	/* or if doesn't think it's ready */
-	if (!is_wifi_ready()) {
+	if (!is_net_if_ready()) {
 		ESP_LOGE(TAG, "wireless network interface is not ready.");
 		udp_error();
 		return;
 	};
 	
 	/* or if we can't get its IP */
-	err = esp_netif_get_ip_info(get_wifi_intf(), &ip_info);
+	err = esp_netif_get_ip_info(get_active_net_intf(), &ip_info);
 	if (err != ESP_OK) {
 		ESP_LOGE(TAG, "wireless network interface wouldn't tell us its IP.");
 		udp_error();

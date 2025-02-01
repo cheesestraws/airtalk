@@ -8,11 +8,15 @@
 #include "freertos/queue.h"
 #include "esp_system.h"
 #include "spi_flash_mmap.h"
+#include "esp_event.h"
+
+#include "hw.h"
 
 #include "packet_types.h"
 #include "buffer_pool.h"
 #include "led.h"
 #include "wifi.h"
+#include "ethernet.h"
 #include "ip.h"
 #include "uart.h"
 #include "apps.h"
@@ -59,8 +63,17 @@ void app_main(void)
 	led_init();
 	printf("uart init\n");
 	uart_init();
+	
+	ESP_ERROR_CHECK(esp_netif_init());
+	ESP_ERROR_CHECK(esp_event_loop_create_default());
+
+#ifndef ETHERNET
 	printf("wifi init\n");
 	init_at_wifi();
+#else
+	printf("ethernet init\n");
+	ethernet_init();
+#endif
 	
 	start_recovery_listener();	
 	start_udp(packet_pool, AppsToUDP, UDPtoUART);
