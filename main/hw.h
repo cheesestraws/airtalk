@@ -1,4 +1,4 @@
-#define OMNITALK
+#define REVA
 
 #ifdef REV0
 // REV0 => through-hole prototype
