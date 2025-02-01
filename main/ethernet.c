@@ -1,3 +1,5 @@
+#include <stdbool.h>
+
 #include <esp_system.h>
 #include <esp_log.h>
 #include <esp_netif.h>
@@ -51,5 +53,8 @@ void ethernet_init(void) {
 	ESP_ERROR_CHECK(esp_netif_set_hostname(global_netif, hostname));
 	free(hostname);
 	ESP_ERROR_CHECK(esp_eth_start(eth_handle));
+	
+	active_net_if = global_netif;
+	net_if_ready = true;
 #endif
 }
